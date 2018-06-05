@@ -11,7 +11,10 @@ export const LOAD_SUCCESS = "LOAD_SUCCESS";
 export const IS_LOADED = "IS_LOADED";
 
 
-export const FILTER = "FILTER"
+export const FILTER_CARD_OPTIONS = "FILTER_CARD_OPTIONS";
+
+
+export const GET_TOTAL_BALANCE = "GET_TOTAL_BALANCE";
 
 
 

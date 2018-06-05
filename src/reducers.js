@@ -11,7 +11,7 @@ export function cardReducer(state, action) {
                 arr_offered_cards: action.payload
             };
 
-        case "FILTER":
+        case "FILTER_CARD_OPTIONS":
 
             const { income, employment_status } = action.options;
 
@@ -19,7 +19,6 @@ export function cardReducer(state, action) {
 
             return {
                 ...state,
-
                 arr_available_cards: state.arr_offered_cards.filter((card) => {
 
                     if ((card.min_required_income) && (h_income > card.min_required_income)) {

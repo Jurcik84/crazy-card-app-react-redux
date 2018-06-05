@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Form, Icon, Input, Button, Select } from 'antd';
 
 // ACTIONS
-import { getAvailableCardsHandler } from './actions';
+import { getAvailableCardsHandler, loadCartsDefinitionsHandler } from './actions';
 
 
 const FormItem = Form.Item;
@@ -17,6 +17,10 @@ class App extends Component {
   state = {
     income: 0,
     employment_status: ''
+  }
+
+  componentDidMount(){
+    this.props.loadCartsDefinitionsHandler();
   }
 
   onSelectCredintials = (name, value) => {
@@ -78,17 +82,6 @@ class App extends Component {
           </Form>
         </header>
         <hr />
-        <ul>
-          {/* {
-            cards.map((cardItem, cardIndex) => (
-              <li key={cardIndex}>
-                {
-                  cardItem.Card_Type
-                }
-              </li>
-            ))
-          } */}
-        </ul>
         <div>
           {
             arr_available_cards.map((cardItem, cardIndex) => (
@@ -110,7 +103,9 @@ class App extends Component {
 const mapStateToProps = (state) => ({
 
   cards: state.arr_offered_cards,
-  arr_available_cards: state.arr_available_cards
+  arr_available_cards: state.arr_available_cards,
+  income: state.income,
+  employment_status: state.employment_status
 });
 
 
@@ -121,6 +116,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getAvailableCardsHandler: (filteringCriterias) => {
       dispatch(getAvailableCardsHandler(filteringCriterias))
+    },
+    loadCartsDefinitionsHandler: () => {
+      dispatch(loadCartsDefinitionsHandler())
     }
   }
 }
