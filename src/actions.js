@@ -1,5 +1,13 @@
 
-import { LOAD_CARDS_DEFINITIONS, LOAD_ERROR, LOAD_SUCCESS, IS_LOADED, FILTER_CARD_OPTIONS } from './constants';
+import {
+    LOAD_CARDS_DEFINITIONS,
+    LOAD_ERROR, LOAD_SUCCESS,
+    IS_LOADED,
+    FILTER_CARD_OPTIONS,
+    SELECT_CARDS, GET_TOTAL_BALANCE,
+    DELETE_SELECTED_CARD,
+    REST_TOTAL_BALANCE
+} from './constants';
 
 
 
@@ -28,13 +36,50 @@ const loadCardsDefinitions = (arr_cardOptions) => ({
 const getAvailableCards = (ob_filter_options) => ({
     type: FILTER_CARD_OPTIONS,
     options: ob_filter_options
-    
+
+});
+
+const selectedCards = (selectedCards) => ({
+    type: SELECT_CARDS,
+    selectedCards
+
 });
 
 
+const getTotalBalance = () => ({
 
-export const getAvailableCardsHandler = (options) => dispatch => dispatch(getAvailableCards(options))
+    type: GET_TOTAL_BALANCE,
+});
 
+
+const deleteSelectedCard = (cardType) => ({
+    type: DELETE_SELECTED_CARD,
+    cardType
+
+});
+
+
+const resetTotalBalanceSum = ()=>({
+    type: REST_TOTAL_BALANCE
+})
+
+
+
+
+
+export const deleteSelectedCardHandler = (cardType) => dispatch => dispatch(deleteSelectedCard(cardType));
+
+export const getAvailableCardsHandler = (options) => dispatch => {
+    dispatch(resetTotalBalanceSum());
+    dispatch(getAvailableCards(options));
+};
+
+
+export const selectCardsHandler = (card) => dispatch => {
+  
+    dispatch(selectedCards(card));
+    dispatch(getTotalBalance());
+};
 
 
 export const loadCartsDefinitionsHandler = () => (dispatch) => {
@@ -44,7 +89,7 @@ export const loadCartsDefinitionsHandler = () => (dispatch) => {
         .then(resposne => resposne.json())
         .then(data => dispatch(loadCardsDefinitions(data)))
         .catch(error => dispatch(loadCardsError()))
-}
+};
 
 
 

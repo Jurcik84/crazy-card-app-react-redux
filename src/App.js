@@ -2,16 +2,25 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // Ant React UI Lib
-import { Form, Icon, Input, Button, Select } from 'antd';
+import { Form, Icon, Input, Button, Select, List, Avatar, Row, Col, Card, Collapse, Layout } from 'antd';
 
 // ACTIONS
-import { getAvailableCardsHandler, loadCartsDefinitionsHandler } from './actions';
+import {
+  getAvailableCardsHandler, loadCartsDefinitionsHandler, selectCardsHandler,
+} from './actions';
 
 
+// DESTRUCT ANT LIB COMPONENT
 const FormItem = Form.Item;
 
 const Option = Select.Option;
 
+const Panel = Collapse.Panel;
+
+const { Header, Content, Footer } = Layout;
+
+
+// MAIN REACT COMPONENT
 class App extends Component {
 
   state = {
@@ -19,7 +28,7 @@ class App extends Component {
     employment_status: ''
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.loadCartsDefinitionsHandler();
   }
 
@@ -48,13 +57,14 @@ class App extends Component {
 
   render() {
 
-    const { cards, arr_available_cards } = this.props;
+    const { cards, arr_available_cards, selectedCards, num_total_balance } = this.props;
 
-    console.log(this.state)
+    // console.log('selectedCards', num_total_balance)
     return (
-      <div className="App">
-        <header>
-          <Form layout="inline" onSubmit={(e) => this.onSubmitForm(e)}>
+      <Layout className="layout" style={{ maxWidth: "940px", margin: "auto" }} className="App">
+
+        <Header>
+          <Form  style={{  padding: 24}} layout="inline" onSubmit={(e) => this.onSubmitForm(e)}>
 
             <FormItem>
               <Input
@@ -77,23 +87,58 @@ class App extends Component {
                 {/* <option value="part-time employed">Full Time Employed</option> */}
               </Select >
             </FormItem>
-
-            <input type="submit" value="submit" />
+            <FormItem>
+            <Input type="submit" value="submit" />
+            </FormItem>
           </Form>
-        </header>
+        </Header>
         <hr />
-        <div>
-          {
-            arr_available_cards.map((cardItem, cardIndex) => (
-              <li key={cardIndex}>
-                {
-                  cardItem.Card_Type
-                }
-              </li>
-            ))
-          }
-        </div>
-      </div>
+        <Content style={{  padding: 24}}>
+          Selected Card will give you :  {num_total_balance}
+        </Content>
+        <hr />
+        <Content style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+          <Row>
+            <Col span={24}>
+              <List
+                className="demo-loadmore-list"
+                // loading={loading}
+                itemLayout="horizontal"
+                // loadMore={loadMore}
+                dataSource={arr_available_cards}
+                renderItem={card => (
+                  <List.Item actions={[<div >Show Card Detail</div>, <div>more</div>]}>
+                    <List.Item.Meta
+                      // avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                      title={card.Card_Type}
+                      description=""
+                    />
+                    <div onClick={() => this.props.selectCardsHandler(card)}>Select Card</div>
+                  </List.Item>
+                )}
+              />
+
+              {/* <Collapse defaultActiveKey={null} onChange={(key)=>this.props.selectCardsHandler(key)}>
+              {
+                arr_available_cards.map((card, cardIndex) => (
+
+                  <Panel
+              
+                  header={card.Card_Type} 
+                  key={cardIndex.toString()}>
+                    <p>{card.Apr}</p>
+                    <p>{card.Balance_Transfer_Offer_Duration}</p>
+                    <p>{card.Purchase_Offer_Duration}</p>
+                    <p>{card.Credit_Available}</p>
+                    <p>{card.min_required_income}</p>
+                  </Panel>
+                ))
+              }
+            </Collapse> */}
+            </Col>
+          </Row>
+        </Content>
+      </Layout>
     );
   }
 }
@@ -105,7 +150,9 @@ const mapStateToProps = (state) => ({
   cards: state.arr_offered_cards,
   arr_available_cards: state.arr_available_cards,
   income: state.income,
-  employment_status: state.employment_status
+  employment_status: state.employment_status,
+  selectedCards: state.selectedCards,
+  num_total_balance: state.num_total_balance
 });
 
 
@@ -119,10 +166,16 @@ const mapDispatchToProps = (dispatch) => {
     },
     loadCartsDefinitionsHandler: () => {
       dispatch(loadCartsDefinitionsHandler())
-    }
+    },
+    selectCardsHandler: (selectedCard) => {
+      dispatch(selectCardsHandler(selectedCard))
+    },
+
   }
 }
 
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+

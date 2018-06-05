@@ -40,6 +40,8 @@ export default createStore(cardReducer, {
   ],
   arr_available_cards: [],
   income: 0,
-  employment_status: ''
-  
+  employment_status: '',
+  selectedCards: [],
+  num_total_balance: 0
+
 }, applyMiddleware(thunk));
