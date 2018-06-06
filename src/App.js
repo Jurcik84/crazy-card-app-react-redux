@@ -72,7 +72,7 @@ class App extends Component {
       >
 
         <Header>
-          <Form style={{ padding: 24 }} layout="inline">
+          <Form style={{ padding: 12 }} layout="inline">
 
             <FormItem>
               <Input
@@ -101,8 +101,8 @@ class App extends Component {
             </FormItem>
           </Form>
         </Header>
-        <hr />
-        <Content style={{ padding: 24 }}>
+        
+        <Content style={{ padding: 6 }}>
           Total Credit from Cards you choose :
           <Currency
             quantity={num_total_balance}
@@ -110,9 +110,7 @@ class App extends Component {
           />
 
         </Content>
-        <hr />
-
-        <Content style={{ background: '#fff', padding: 0, minHeight: 280 }}>
+       <Content style={{ background: '#fff', padding: 0, minHeight: 280 }}>
           <Collapse>
             {
               arr_available_cards.map((cardItem, cardIndex) => (
