@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Currency from 'react-currency-formatter';
+
 
 // Ant React UI Lib
 import { Form, Icon, Input, Button, Select, List, Avatar, Row, Col, Card, Collapse, Layout } from 'antd';
 
 // ACTIONS
 import {
-  getAvailableCardsHandler, loadCartsDefinitionsHandler, selectCardsHandler,
+  getAvailableCardsHandler,
+  loadCartsDefinitionsHandler,
+  selectCardsHandler,
+
 } from './actions';
 
 
@@ -61,10 +66,13 @@ class App extends Component {
 
     // console.log('selectedCards', num_total_balance)
     return (
-      <Layout className="layout" style={{ maxWidth: "940px", margin: "auto" }} className="App">
+      <Layout
+        className="layout"
+        style={{ maxWidth: "940px", margin: "auto" }}
+      >
 
         <Header>
-          <Form  style={{  padding: 24}} layout="inline" onSubmit={(e) => this.onSubmitForm(e)}>
+          <Form style={{ padding: 24 }} layout="inline">
 
             <FormItem>
               <Input
@@ -83,60 +91,46 @@ class App extends Component {
               >
                 <Option value="employed">Part Time / Full Time Employed</Option >
                 <Option value="student">Student</Option >
-                {/* <option value="anyone">Not Provided</option> */}
-                {/* <option value="part-time employed">Full Time Employed</option> */}
+
               </Select >
             </FormItem>
             <FormItem>
-            <Input type="submit" value="submit" />
+              <Button onClick={(e) => this.onSubmitForm(e)} >
+                Search your options
+              </Button>
             </FormItem>
           </Form>
         </Header>
         <hr />
-        <Content style={{  padding: 24}}>
-          Selected Card will give you :  {num_total_balance}
+        <Content style={{ padding: 24 }}>
+          Total Credit from Cards you choose :
+          <Currency
+            quantity={num_total_balance}
+            currency="GBP"
+          />
+
         </Content>
         <hr />
-        <Content style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-          <Row>
-            <Col span={24}>
-              <List
-                className="demo-loadmore-list"
-                // loading={loading}
-                itemLayout="horizontal"
-                // loadMore={loadMore}
-                dataSource={arr_available_cards}
-                renderItem={card => (
-                  <List.Item actions={[<div >Show Card Detail</div>, <div>more</div>]}>
-                    <List.Item.Meta
-                      // avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                      title={card.Card_Type}
-                      description=""
-                    />
-                    <div onClick={() => this.props.selectCardsHandler(card)}>Select Card</div>
-                  </List.Item>
-                )}
-              />
 
-              {/* <Collapse defaultActiveKey={null} onChange={(key)=>this.props.selectCardsHandler(key)}>
-              {
-                arr_available_cards.map((card, cardIndex) => (
+        <Content style={{ background: '#fff', padding: 0, minHeight: 280 }}>
+          <Collapse>
+            {
+              arr_available_cards.map((cardItem, cardIndex) => (
 
-                  <Panel
-              
-                  header={card.Card_Type} 
-                  key={cardIndex.toString()}>
-                    <p>{card.Apr}</p>
-                    <p>{card.Balance_Transfer_Offer_Duration}</p>
-                    <p>{card.Purchase_Offer_Duration}</p>
-                    <p>{card.Credit_Available}</p>
-                    <p>{card.min_required_income}</p>
-                  </Panel>
-                ))
-              }
-            </Collapse> */}
-            </Col>
-          </Row>
+                <Panel header={cardItem.Card_Type} key={cardIndex.toString()}>
+
+                  <p>{cardItem.Apr}</p>
+                  <p>{cardItem.Balance_Transfer_Offer_Duration}</p>
+                  <p>{cardItem.Credit_Available}</p>
+                  <Button
+                    type="primary"
+                    onClick={() => this.props.selectCardsHandler(cardItem)}>
+                    <Icon type="select" />
+                  </Button>
+                </Panel>
+              ))
+            }
+          </Collapse>
         </Content>
       </Layout>
     );
