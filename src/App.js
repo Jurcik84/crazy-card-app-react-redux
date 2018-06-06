@@ -117,9 +117,11 @@ class App extends Component {
 
                 <Panel header={cardItem.Card_Type} key={cardIndex.toString()}>
 
-                  <p>{cardItem.Apr}</p>
-                  <p>{cardItem.Balance_Transfer_Offer_Duration}</p>
-                  <p>{cardItem.Credit_Available}</p>
+                  {
+                    Object.entries(cardItem).map((cardItemEntry, cardIndexEntry)=>(
+                        <p>{cardItemEntry[0].replace(/_/g, ' ')} : {cardItemEntry[1]}</p>
+                    ))
+                  }
                   <Button
                     type="primary"
                     onClick={() => this.props.selectCardsHandler(cardItem)}>
